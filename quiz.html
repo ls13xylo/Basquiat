@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<title>Quiz – Basquiat im Comic</title>
+<style>
+  :root {
+    --paper: #f3ecd9;
+    --ink: #201c18;
+    --ink-soft: #6b6255;
+    --blue: #7fb3c9;
+    --curtain: #c1440e;
+    --curtain-dark: #8a2f0a;
+    --rule: #ddd0b0;
+    --good: #4a7c4e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    line-height: 1.6;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 1.4rem 2rem;
+    border-bottom: 3px solid;
+    border-image: linear-gradient(90deg, var(--blue), var(--rule) 55%, var(--curtain)) 1;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  header .brand {
+    font-family: "Bebas Neue", "Iowan Old Style", Georgia, serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  nav a {
+    font-family: system-ui, sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.2s ease;
+  }
+  nav a:hover, nav a:focus-visible { border-color: var(--curtain); }
+  nav a.active { border-color: var(--curtain); }
+
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+  h1 {
+    font-family: "Bebas Neue", "Iowan Old Style", Georgia, serif;
+    font-size: clamp(2.4rem, 6vw, 3.2rem);
+    font-weight: 400;
+    letter-spacing: 0.015em;
+    margin: 0 0 0.6rem;
+  }
+  .quiz-intro {
+    font-size: 1.02rem;
+    max-width: 62ch;
+    margin: 0 0 2.5rem;
+  }
+
+  .level-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin: 3rem 0 1.6rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--blue);
+  }
+  .level-heading h2 {
+    font-family: "Bebas Neue", "Iowan Old Style", Georgia, serif;
+    font-weight: 400;
+    font-size: 1.7rem;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+  .level-heading span {
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .question {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.1rem 1.3rem 1.3rem;
+    margin-bottom: 1.1rem;
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+  .question h3 {
+    font-family: system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.8rem;
+    line-height: 1.45;
+  }
+  .question label {
+    display: block;
+    font-family: system-ui, sans-serif;
+    font-size: 0.95rem;
+    padding: 0.35rem 0;
+    cursor: pointer;
+  }
+  .question input[type="radio"] {
+    margin-right: 0.6rem;
+    accent-color: var(--curtain);
+  }
+  .question.correct {
+    border-color: var(--good);
+    background: rgba(74, 124, 78, 0.06);
+  }
+  .question.incorrect {
+    border-color: var(--curtain);
+    background: rgba(193, 68, 14, 0.05);
+  }
+  .question .feedback {
+    display: none;
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .question.correct .feedback,
+  .question.incorrect .feedback {
+    display: block;
+  }
+  .question.correct .feedback { color: var(--good); }
+  .question.incorrect .feedback { color: var(--curtain-dark); }
+
+  .quiz-btn {
+    font-family: system-ui, sans-serif;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.4rem;
+    background: var(--curtain);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s ease;
+  }
+  .quiz-btn:hover { background: var(--curtain-dark); }
+
+  .check-btn {
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.9rem;
+    margin-top: 0.4rem;
+    background: transparent;
+    color: var(--curtain);
+    border: 1px solid var(--curtain);
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .check-btn:hover {
+    background: var(--curtain);
+    color: #fff;
+  }
+  .question.correct .check-btn {
+    border-color: var(--good);
+    color: var(--good);
+  }
+  .question.correct .check-btn:hover { background: var(--good); color: #fff; }
+  .question.incorrect .check-btn {
+    border-color: var(--curtain-dark);
+  }
+
+  .quiz-result {
+    display: none;
+    margin-top: 1.2rem;
+    padding: 0.9rem 1.2rem;
+    border-left: 3px solid var(--blue);
+    font-family: system-ui, sans-serif;
+    font-size: 0.95rem;
+    background: rgba(127, 179, 201, 0.08);
+  }
+  .quiz-result.visible { display: block; }
+
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 2rem 3rem;
+    border-top: 1px solid var(--rule);
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+  }
+  footer a { color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="brand">Biographie im Comic</span>
+  <nav>
+    <a href="index.html">Start</a>
+    <a href="quiz.html" class="active">Quiz</a>
+    <a href="quellen.html">Quellen</a>
+    <a href="impressum.html">Impressum</a>
+  </nav>
+</header>
+
+<main>
+  <h1>Quiz</h1>
+  <p class="quiz-intro">Wie viel ist beim Suchspiel hängen geblieben? Beantworte die Fragen zu
+  beiden Ebenen und lass dir direkt anzeigen, was du richtig hattest.</p>
+
+  <!-- =========================
+       1. EBENE
+       ========================= -->
+  <div class="level-heading">
+    <h2>Ebene 1</h2>
+    <span>8 Fragen</span>
+  </div>
+
+  <div class="quiz-level" id="level-1">
+
+    <div class="question" data-answer="B">
+      <h3>1. Welche familiären Wurzeln hatte Jean-Michel Basquiat?</h3>
+      <label><input type="radio" name="q1" value="A"> A) Sein Vater stammte aus Jamaika, seine Mutter aus Kuba.</label>
+      <label><input type="radio" name="q1" value="B"> B) Sein Vater stammte aus Haiti, seine Mutter hatte puerto-ricanische Wurzeln.</label>
+      <label><input type="radio" name="q1" value="C"> C) Beide Eltern stammten aus Haiti.</label>
+      <label><input type="radio" name="q1" value="D"> D) Sein Vater stammte aus Puerto Rico, seine Mutter aus Haiti.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="C">
+      <h3>2. Was war SAMO und mit wem entwickelte Basquiat es?</h3>
+      <label><input type="radio" name="q2" value="A"> A) Eine Galerie, die Basquiat gemeinsam mit Andy Warhol gründete.</label>
+      <label><input type="radio" name="q2" value="B"> B) Eine Musikgruppe aus Basquiat und Keith Haring.</label>
+      <label><input type="radio" name="q2" value="C"> C) Ein Graffiti-Projekt, das Basquiat gemeinsam mit Al Diaz entwickelte.</label>
+      <label><input type="radio" name="q2" value="D"> D) Ein Künstlerkollektiv aus der Lower East Side.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="A">
+      <h3>3. Welche Motive sind typisch für Basquiats Kunst?</h3>
+      <label><input type="radio" name="q3" value="A"> A) Kronen, Skelette, Köpfe und menschliche Figuren.</label>
+      <label><input type="radio" name="q3" value="B"> B) Landschaften, Kirchen und Stillleben.</label>
+      <label><input type="radio" name="q3" value="C"> C) Tiere, Blumen und Seestücke.</label>
+      <label><input type="radio" name="q3" value="D"> D) Fotografien und geometrische Muster.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="B">
+      <h3>4. Welche Themen stehen im Zentrum von Basquiats Kunst?</h3>
+      <label><input type="radio" name="q4" value="A"> A) Natur, Religion und Landschaft.</label>
+      <label><input type="radio" name="q4" value="B"> B) Rassismus, Macht, Identität und soziale Ungleichheit.</label>
+      <label><input type="radio" name="q4" value="C"> C) Krieg, Militär und technische Entwicklung.</label>
+      <label><input type="radio" name="q4" value="D"> D) Architektur, Städtebau und Industrialisierung.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="C">
+      <h3>5. Warum war Basquiats Position in der New Yorker Kunstwelt besonders?</h3>
+      <label><input type="radio" name="q5" value="A"> A) Er war einer der ersten weißen Künstler aus der Street-Art-Szene.</label>
+      <label><input type="radio" name="q5" value="B"> B) Er arbeitete ausschließlich außerhalb von Galerien.</label>
+      <label><input type="radio" name="q5" value="C"> C) Er war ein schwarzer Künstler, der in einer überwiegend weißen Kunstwelt internationalen Erfolg erlangte.</label>
+      <label><input type="radio" name="q5" value="D"> D) Er lehnte den Kunstmarkt grundsätzlich ab.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="D">
+      <h3>6. Was geschah mit Michael Stewart und wie reagierte Basquiat darauf?</h3>
+      <label><input type="radio" name="q6" value="A"> A) Stewart wurde Basquiats Galerist und Basquiat malte ein Porträt von ihm.</label>
+      <label><input type="radio" name="q6" value="B"> B) Stewart war Basquiats Bruder und starb bei einem Unfall.</label>
+      <label><input type="radio" name="q6" value="C"> C) Stewart war ein Kunstkritiker, der Basquiat öffentlich angegriffen hatte.</label>
+      <label><input type="radio" name="q6" value="D"> D) Stewart starb nach einer Polizeikontrolle; Basquiat schuf daraufhin „Defacement (The Death of Michael Stewart)".</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="A">
+      <h3>7. Wie wird New York in den späten 1970er- und 1980er-Jahren beschrieben?</h3>
+      <label><input type="radio" name="q7" value="A"> A) Als Stadt mit wirtschaftlichen Problemen, Kriminalität und Verfall, gleichzeitig aber mit Punk, Hip-Hop, Graffiti und Undergroundkultur.</label>
+      <label><input type="radio" name="q7" value="B"> B) Als wirtschaftlich erfolgreiche Stadt mit einer weitgehend etablierten Kunstszene.</label>
+      <label><input type="radio" name="q7" value="C"> C) Als kulturell eher langweilige Stadt ohne bedeutende Undergroundszene.</label>
+      <label><input type="radio" name="q7" value="D"> D) Als Zentrum ausschließlich der klassischen und akademischen Kunst.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="D">
+      <h3>8. Was sagte Basquiat einmal über den Anteil von Wut in seiner Kunst?</h3>
+      <label><input type="radio" name="q8" value="A"> A) 50 %</label>
+      <label><input type="radio" name="q8" value="B"> B) 65 %</label>
+      <label><input type="radio" name="q8" value="C"> C) 90 %</label>
+      <label><input type="radio" name="q8" value="D"> D) 80 %</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+  </div>
+
+  <button class="quiz-btn" onclick="evaluateLevel('level-1', 'result-1')">Ebene 1 auswerten</button>
+  <div class="quiz-result" id="result-1"></div>
+
+  <!-- =========================
+       2. EBENE
+       ========================= -->
+  <div class="level-heading">
+    <h2>Ebene 2</h2>
+    <span>8 Fragen</span>
+  </div>
+
+  <div class="quiz-level" id="level-2">
+
+    <div class="question" data-answer="B">
+      <h3>9. Welche Funktion hat die schwarze Figur, die Basquiat durch den Comic begleitet?</h3>
+      <label><input type="radio" name="q9" value="A"> A) Sie stellt Andy Warhol dar.</label>
+      <label><input type="radio" name="q9" value="B"> B) Sie ist eine Schatten- bzw. Erzählerfigur und begleitet ihn durch seine Erinnerungen.</label>
+      <label><input type="radio" name="q9" value="C"> C) Sie ist sein Galerist und Manager.</label>
+      <label><input type="radio" name="q9" value="D"> D) Sie ist eine reale Person aus Basquiats Kindheit.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="A">
+      <h3>10. Worauf basiert die Schattenfigur?</h3>
+      <label><input type="radio" name="q10" value="A"> A) Auf einem Motiv aus Basquiats eigener Kunst.</label>
+      <label><input type="radio" name="q10" value="B"> B) Auf einer historischen Fotografie von Basquiat.</label>
+      <label><input type="radio" name="q10" value="C"> C) Auf einer Figur aus einem anderen Comic.</label>
+      <label><input type="radio" name="q10" value="D"> D) Auf Basquiats Mutter.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="C">
+      <h3>11. Welche Funktion hat die Figur als Erzählerfigur?</h3>
+      <label><input type="radio" name="q11" value="A"> A) Sie erzählt ausschließlich die Geschichte der New Yorker Kunstszene.</label>
+      <label><input type="radio" name="q11" value="B"> B) Sie erklärt ausschließlich die einzelnen Gemälde Basquiats.</label>
+      <label><input type="radio" name="q11" value="C"> C) Sie führt durch Basquiats Erinnerungen und verbindet verschiedene Stationen seines Lebens.</label>
+      <label><input type="radio" name="q11" value="D"> D) Sie erzählt die Geschichte aus der Perspektive Andy Warhols.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="A">
+      <h3>12. Welche Funktion hat die Figur für die Darstellung von Basquiats Innenleben?</h3>
+      <label><input type="radio" name="q12" value="A"> A) Sie macht seine inneren Konflikte, Ängste und Gedanken sichtbar.</label>
+      <label><input type="radio" name="q12" value="B"> B) Sie stellt ausschließlich seine positiven Erinnerungen dar.</label>
+      <label><input type="radio" name="q12" value="C"> C) Sie verkörpert seine Karriere als erfolgreicher Künstler.</label>
+      <label><input type="radio" name="q12" value="D"> D) Sie erklärt die historischen Hintergründe der New Yorker Kunstwelt.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="D">
+      <h3>13. Wie verhält sich die Schattenfigur gegenüber Basquiat?</h3>
+      <label><input type="radio" name="q13" value="A"> A) Sie ist ausschließlich sein Gegner.</label>
+      <label><input type="radio" name="q13" value="B"> B) Sie taucht nur bei seinen Treffen mit Andy Warhol auf.</label>
+      <label><input type="radio" name="q13" value="C"> C) Sie verschwindet nach Basquiats Jugend vollständig.</label>
+      <label><input type="radio" name="q13" value="D"> D) Sie begleitet ihn, kommentiert Ereignisse, hilft ihm teilweise und konfrontiert ihn auch.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="B">
+      <h3>14. Welche Bedeutung bekommt die Schattenfigur im Zusammenhang mit Basquiats Drogenkonsum?</h3>
+      <label><input type="radio" name="q14" value="A"> A) Sie verschwindet während seines Drogenkonsums.</label>
+      <label><input type="radio" name="q14" value="B"> B) Basquiat und die Schattenfigur verschmelzen miteinander.</label>
+      <label><input type="radio" name="q14" value="C"> C) Die Figur wird zu seinem Arzt.</label>
+      <label><input type="radio" name="q14" value="D"> D) Die Figur übernimmt die Kontrolle über seine Karriere.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="C">
+      <h3>15. Welche Personen aus Basquiats Umfeld bzw. der damaligen New Yorker Kulturszene spielen im Comic eine Rolle?</h3>
+      <label><input type="radio" name="q15" value="A"> A) Ausschließlich Basquiats Familienmitglieder.</label>
+      <label><input type="radio" name="q15" value="B"> B) Nur Galerist:innen und Kunstkritiker:innen.</label>
+      <label><input type="radio" name="q15" value="C"> C) Unter anderem Andy Warhol, Madonna und weitere Personen aus der Kunst- und Kulturszene.</label>
+      <label><input type="radio" name="q15" value="D"> D) Nur Personen aus der Graffiti-Szene.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="A">
+      <h3>16. Was ermöglicht die Kombination aus realen Personen und der Schattenfigur für die Darstellung Basquiats?</h3>
+      <label><input type="radio" name="q16" value="A"> A) Basquiat kann gleichzeitig als historische Person und mit seinem inneren Erleben und seinen Konflikten dargestellt werden.</label>
+      <label><input type="radio" name="q16" value="B"> B) Eine möglichst objektive und rein chronologische Biografie.</label>
+      <label><input type="radio" name="q16" value="C"> C) Die historischen Ereignisse werden vollständig durch Fantasie ersetzt.</label>
+      <label><input type="radio" name="q16" value="D"> D) Seine Kunst wird vollständig von seiner Biografie getrennt.</label>
+      <button class="check-btn" onclick="checkQuestion(this)">Prüfen</button>
+      <div class="feedback"></div>
+    </div>
+
+  </div>
+
+  <button class="quiz-btn" onclick="evaluateLevel('level-2', 'result-2')">Ebene 2 auswerten</button>
+  <div class="quiz-result" id="result-2"></div>
+
+</main>
+
+<footer>
+  <span>Seminararbeit Public History</span>
+  <span><a href="impressum.html">Impressum</a> · <a href="quellen.html">Quellen</a></span>
+</footer>
+
+<script>
+  function checkQuestion(btn) {
+    var q = btn.closest('.question');
+    var answer = q.getAttribute('data-answer');
+    var inputs = q.querySelectorAll('input[type="radio"]');
+    var checked = null;
+    inputs.forEach(function (input) {
+      if (input.checked) checked = input;
+    });
+    var feedback = q.querySelector('.feedback');
+    q.classList.remove('correct', 'incorrect');
+
+    if (checked && checked.value === answer) {
+      q.classList.add('correct');
+      feedback.textContent = 'Richtig!';
+    } else {
+      q.classList.add('incorrect');
+      feedback.textContent = checked
+        ? 'Leider falsch. Richtige Antwort: ' + answer
+        : 'Bitte erst eine Antwort auswählen.';
+    }
+  }
+
+  function evaluateLevel(levelId, resultId) {
+    var level = document.getElementById(levelId);
+    var questions = level.querySelectorAll('.question');
+    var correctCount = 0;
+
+    questions.forEach(function (q) {
+      var answer = q.getAttribute('data-answer');
+      var inputs = q.querySelectorAll('input[type="radio"]');
+      var checked = null;
+      inputs.forEach(function (input) {
+        if (input.checked) checked = input;
+      });
+      var feedback = q.querySelector('.feedback');
+      q.classList.remove('correct', 'incorrect');
+
+      if (checked && checked.value === answer) {
+        correctCount++;
+        q.classList.add('correct');
+        feedback.textContent = 'Richtig!';
+      } else {
+        q.classList.add('incorrect');
+        feedback.textContent = checked
+          ? 'Leider falsch. Richtige Antwort: ' + answer
+          : 'Keine Antwort ausgewählt. Richtige Antwort: ' + answer;
+      }
+    });
+
+    var resultEl = document.getElementById(resultId);
+    resultEl.textContent = 'Du hast ' + correctCount + ' von ' + questions.length + ' Fragen richtig beantwortet.';
+    resultEl.classList.add('visible');
+  }
+</script>
+
+</body>
+</html>
