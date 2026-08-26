@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<title>Quellen – Basquiat im Comic</title>
+<style>
+  :root {
+    --paper: #f3ecd9;
+    --ink: #201c18;
+    --ink-soft: #6b6255;
+    --blue: #7fb3c9;
+    --curtain: #c1440e;
+    --rule: #ddd0b0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    line-height: 1.6;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 1.4rem 2rem;
+    border-bottom: 3px solid;
+    border-image: linear-gradient(90deg, var(--blue), var(--rule) 55%, var(--curtain)) 1;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  header .brand {
+    font-family: "Bebas Neue", "Iowan Old Style", Georgia, serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  nav a {
+    font-family: system-ui, sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.2s ease;
+  }
+  nav a:hover, nav a:focus-visible { border-color: var(--curtain); }
+  nav a.active { border-color: var(--curtain); }
+
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+  h1 {
+    font-family: "Bebas Neue", "Iowan Old Style", Georgia, serif;
+    font-size: clamp(2.4rem, 6vw, 3.2rem);
+    font-weight: 400;
+    letter-spacing: 0.015em;
+    margin: 0 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .motif-icon {
+    height: 3.8rem;
+    width: auto;
+    opacity: 0.9;
+  }
+  h2 {
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 2.2rem 0 0.8rem;
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 0.4rem;
+  }
+  ul {
+    padding-left: 1.2rem;
+  }
+  li {
+    margin-bottom: 0.6rem;
+  }
+  .placeholder {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-family: system-ui, sans-serif;
+    font-size: 0.95rem;
+    border-left: 3px solid var(--blue);
+    padding-left: 1rem;
+    margin: 0.5rem 0 1rem;
+  }
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 2rem 3rem;
+    border-top: 1px solid var(--rule);
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+  }
+  footer a { color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="brand">Biographie im Comic</span>
+  <nav>
+    <a href="index.html">Start</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="quellen.html" class="active">Quellen</a>
+    <a href="impressum.html">Impressum</a>
+  </nav>
+</header>
+
+<main>
+  <h1>Quellen</h1>
+
+  <h2>Comic</h2>
+  <p>Voloj, Julian/Mosdal, Søren: Basquiat. Eine Biografie über einen Ausnahmekünstler,
+  2. Auflage, Hamburg: Carlsen Verlag, 2020, 136 S., ISBN 978-3-551-76046-3.</p>
+
+  <h2>Verwendete Kunstwerke</h2>
+  <ul>
+    <li>Placeholder – Titel, Jahr, Museum/Sammlung der gezeigten Gemälde ergänzen.</li>
+  </ul>
+
+  <h2>Fotografien</h2>
+  <div class="placeholder">Platzhalter: Bildnachweise der verwendeten historischen Fotos
+  (Fotograf:in, Archiv/Agentur, Jahr) ergänzen.</div>
+
+  <h2>Literatur</h2>
+  <ul>
+    <li>Buchhart, Dieter/Bloom, Tricia Laughlin (Hrsg.): Basquiat: The Unknown Notebooks, New York 2015.</li>
+    <li>Emmerling, Leonhard: Basquiat, Köln 2015.</li>
+    <li>Green, Elon: The Man Nobody Killed: Life, Death, and Art in Michael Stewart's New York, New York 2025.</li>
+    <li>Hoban, Phoebe: Basquiat: A Quick Killing in Art, New York 1998.</li>
+    <li>Kirilov, Vladislav: Erasing the Artist, Policing the City: Michael Stewart and New York's War on Graffiti, in: Anthós 15 (2026), H. 1, Art. 4.</li>
+    <li>LaBouvier, Chaédria (Hrsg.): Basquiat's "Defacement": The Untold Story, New York 2019.</li>
+    <li>Saggese, Jordana Moore: Reading Basquiat: Exploring Ambivalence in American Art, Berkeley 2014.</li>
+    <li>Woodham, Doug: Jean-Michel Basquiat: The Making of an Icon, London 2025.</li>
+  </ul>
+</main>
+
+<footer>
+  <span>Seminararbeit Public History</span>
+  <span><a href="impressum.html">Impressum</a> · <a href="index.html">Start</a></span>
+</footer>
+
+</body>
+</html>
