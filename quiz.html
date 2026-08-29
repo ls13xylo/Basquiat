@@ -111,14 +111,17 @@
     line-height: 1.45;
   }
   .question label {
-    display: block;
+    display: flex;
+    align-items: flex-start;
     font-family: system-ui, sans-serif;
     font-size: 0.95rem;
     padding: 0.35rem 0;
     cursor: pointer;
+    gap: 0.6rem;
   }
   .question input[type="radio"] {
-    margin-right: 0.6rem;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
     accent-color: var(--curtain);
   }
   .question.correct {
@@ -328,6 +331,8 @@
     <h2>Ebene 2</h2>
     <span>8 Fragen</span>
   </div>
+  <p class="quiz-intro">Hast du die Comic-Ebene gefunden? Wenn nicht, klick dich unten
+  rechts im Suchspiel weiter und schau, was du noch so alles entdecken kannst!</p>
 
   <div class="quiz-level" id="level-2">
 
